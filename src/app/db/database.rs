@@ -4,6 +4,7 @@ cfg_if::cfg_if! {
     if #[cfg(feature = "ssr")] {
 
         use crate::app::models::Person;
+        use crate::app::errors::PersonError;
         use surrealdb::engine::remote::ws::{Client, Ws};
         use surrealdb::opt::auth::Root;
         use surrealdb::{Error, Surreal};
@@ -57,6 +58,48 @@ cfg_if::cfg_if! {
                 }
             }
 
-        }        
+        }
+
+        pub async fn update_person(uuid: String, title: String, 
+            level: String, compensation: i32
+        ) -> Result<Option<Person>, PersonError> {
+            
+            open_db_connection().await;
+
+            // first we try to find the person in the database
+            let find_person: Result<Option<Person>, Error> = 
+                DB.select(("person", &uuid)).await;
+            match find_person {
+
+                Ok(found) => {
+                    //if we found the person, we update him/he
+                    match found {
+                        Some(found_person) => {
+                            let updated_user: Result<Option<Person>, Error> =
+                                DB.update(("person", &uuid))
+                                .merge(Person::new(
+                                    uuid,
+                                    found_person.name, 
+                                    title, 
+                                    level, 
+                                    compensation, 
+                                    found_person.joined_date
+                                ))
+                                .await;
+                            let _ = DB.invalidate().await;
+                            match updated_user {
+                                Ok(returned_user) => Ok(returned_user),
+                                Err(_) => Err(PersonError::PersonUpdatefailure)
+                            }
+                        },
+                        None => Err(PersonError::PersonUpdatefailure)
+                    }
+                },
+                Err(_) => {
+                    DB.invalidate().await;
+                    Err(PersonError::PersonNotFound)
+                }
+            }
+        }
     }
 }
