@@ -57,3 +57,27 @@ impl AddPersonRequest {
         }
     }
 }
+
+#[derive(Debug, Validate, Deserialize, Serialize, PartialEq, Eq, Clone)]
+pub struct EditPersonRequest {
+    #[validate(length(min = 1, message = "id is required"))]
+    pub uuid: String,
+    #[validate(length(min = 1, message = "title is required"))]
+    pub title: String,
+    #[validate(length(min = 1, message = "level is required"))]
+    pub level: String,
+    #[validate(range(min = 2000, max = 99999))]
+    pub compensation: i32,
+}
+
+impl EditPersonRequest {
+    pub fn new(uuid: String, title: String, level: String, compensation: i32) ->
+    EditPersonRequest {
+        EditPersonRequest {
+            uuid,
+            title,
+            level,
+            compensation,
+        }
+    }
+}
