@@ -3,6 +3,7 @@ pub mod db;
 pub mod models;
 pub mod server_functions;
 pub mod pages;
+pub mod errors;
 use pages::{HomePage, TeamPage};
 
 
