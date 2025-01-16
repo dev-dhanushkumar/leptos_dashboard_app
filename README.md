@@ -171,7 +171,14 @@ In the Project Directory open terminal perform below command!
 5. Open the browser and navigate to `http://localhost:3000` to see the dashboard.
 
 ---
-## **Example Project pages**
+## **Learning Resources**
+- [Leptos Documentation](https://book.leptos.dev/)
+- [Actix Web Documentation](https://docs.rs/actix-web/latest/actix_web/)
+- [SurrealDB Documentation](https://surrealdb.com/docs/)
+
+---
+
+## **Screenshots Project pages**
 
 ### 1. **Dashboard Page**
 
@@ -179,3 +186,12 @@ In the Project Directory open terminal perform below command!
 
 ### 2. **Team Page**
 ![team_page](https://github.com/dev-dhanushkumar/leptos_dashboard_app/blob/main/assets/team_page.png)
+
+### 3. **Add Person Page**
+![Add Person page](https://github.com/dev-dhanushkumar/leptos_dashboard_app/blob/main/assets/add_person.png)
+
+### 4. **Edit Person Page**
+![Add person page](https://github.com/dev-dhanushkumar/leptos_dashboard_app/blob/main/assets/edit_person.png)
+
+### 5. **Delete & Info page**
+![Delete & info page](https://github.com/dev-dhanushkumar/leptos_dashboard_app/blob/main/assets/info_person.png)
