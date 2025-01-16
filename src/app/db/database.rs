@@ -46,10 +46,6 @@ cfg_if::cfg_if! {
                 .await;
             let _ = DB.invalidate().await;
 
-            // match results {
-            //     Ok(created_person) => created_person,
-            //     Err(_) => None
-            // }
             match results {
                 Ok(created_person) => created_person,
                 Err(e) => {
@@ -100,6 +96,18 @@ cfg_if::cfg_if! {
                     Err(PersonError::PersonNotFound)
                 }
             }
+        }
+
+        pub async fn delete_person(person_uuid: String) 
+            -> Result<Option<Person>, PersonError> {
+                open_db_connection().await;
+                let delete_results = DB.delete(("person", person_uuid)).await;
+                DB.invalidate().await;
+
+                match delete_results {
+                    Ok(deleted_person) => Ok(deleted_person),
+                    Err(_) => Err(PersonError::PersonDeleteFailure),
+                }
         }
     }
 }
