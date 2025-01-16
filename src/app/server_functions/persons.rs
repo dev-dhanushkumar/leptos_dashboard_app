@@ -1,8 +1,5 @@
-use crate::app::{
-    errors::{ErrorMessage, ResponseErrorTrait}, 
-    models::{AddPersonRequest, EditPersonRequest, Person}
-};
-// use crate::app::errors::{ErrorMessage, ResponseErrorTrait};
+use crate::app::models::{AddPersonRequest, EditPersonRequest, Person, DeletePersonRequest};
+use crate::app::errors::{ErrorMessage, ResponseErrorTrait};
 use leptos::*;
 // use serde::{Serialize, Deserialize};
 
@@ -53,6 +50,26 @@ pub async fn edit_person(edit_person_request: EditPersonRequest) -> Result<Perso
     }
 }
 
+#[server(DeletePerson, "/api")]
+pub async fn delete_person(delete_person_request: DeletePersonRequest) -> Result<Person, ServerFnError> {
+    let deleted_results = delete_team_person(delete_person_request.uuid).await;
+    match deleted_results {
+        Ok(deleted) => {
+            if let Some(deleted_person) = deleted {
+                Ok(deleted_person)
+            } else {
+                Err(ServerFnError::Response(ErrorMessage::create(
+                    PersonError::PersonDeleteFailure
+                )))
+            }
+        },
+        Err(person_error) =>
+            Err(ServerFnError::Response(ErrorMessage::create(
+                person_error
+            )))
+    }
+}
+
 cfg_if::cfg_if! {
     if #[cfg(feature = "ssr")] {
 
@@ -88,7 +105,6 @@ cfg_if::cfg_if! {
                     current_formated
                 );
 
-                println!("New Person in SSR: {:?}", new_person.clone());
 
                 database::add_person(new_person).await
         }
@@ -98,5 +114,11 @@ cfg_if::cfg_if! {
             where T: Into<String>{
                 database::update_person(uuid.into(), title.into(), level.into(), compensation).await
             }
+
+        pub async fn delete_team_person<T>(uuid: T) -> 
+            Result<Option<Person>, PersonError>
+            where T: Into<String> {
+                database::delete_person(uuid.into()).await
+        }
     }
 }
