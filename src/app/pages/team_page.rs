@@ -65,6 +65,9 @@ pub fn TeamPage() -> impl IntoView {
                                                         // <div>{&each_person.name}</div>
                                                         <PersonRow
                                                             person = Rc::new(each_person.clone())
+                                                            person_resource = get_persons_info
+                                                            set_if_show_toast
+                                                            set_toast_message
                                                         />
                                                     }).collect_view()
                                                 },
