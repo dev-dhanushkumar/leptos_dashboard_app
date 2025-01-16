@@ -81,3 +81,15 @@ impl EditPersonRequest {
         }
     }
 }
+
+#[derive(Debug, Validate, Deserialize, Serialize, PartialEq, Eq, Clone)]
+pub struct DeletePersonRequest {
+    #[validate(length(min = 1, message = "id is required"))]
+    pub uuid: String,
+}
+
+impl DeletePersonRequest {
+    pub fn new(uuid: String) -> DeletePersonRequest {
+        DeletePersonRequest { uuid }
+    }
+}
