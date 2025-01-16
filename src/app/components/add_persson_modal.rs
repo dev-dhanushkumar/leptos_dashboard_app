@@ -74,15 +74,15 @@ pub fn AddPersonModal(set_if_show_modal: WriteSignal<bool>,
                     };
                 });
             }
-            Err(_) => {
+            Err(e) => {
                 set_if_error(true);
-                set_error_message(String::from("All fields are required!"));
+                set_error_message(String::from(e.to_string()));
             }
         }
     };
     
     view! {
-        <div class="flex flex-col items-center justify-center min-h-screen">
+        <div class="flex flex-col w-full h-full z-50 mx-auto items-center align-center">
             <div class = {move || {
                 if if_error() { ERROR_STYLE }
                 else { NO_ERROR_STYLE }
