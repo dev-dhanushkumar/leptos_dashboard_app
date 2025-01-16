@@ -171,7 +171,7 @@ In the Project Directory open terminal perform below command!
 5. Open the browser and navigate to `http://localhost:3000` to see the dashboard.
 
 ---
-## **Example Prject pages**
+## **Example Project pages**
 
 ### 1. **Dashboard Page**
 
