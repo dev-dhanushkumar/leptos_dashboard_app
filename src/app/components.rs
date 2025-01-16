@@ -21,3 +21,9 @@ pub use dashboard_chart::DashboardChart;
 
 pub mod dashboard_widget;
 pub use dashboard_widget::DashboardWidget;
+
+pub mod edit_person_modal;
+pub use edit_person_modal::EditPersonModal;
+
+pub mod show_person_modal;
+pub use show_person_modal::ShowPersonModal;
